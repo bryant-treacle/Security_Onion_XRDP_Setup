@@ -1,34 +1,35 @@
 #!/bin/bash
+# Author: Bryant Treacle
+# DateL 2018.10.14
+
 #Install Necessary Deb Packages for XRDP
 sudo dpkg -i libtasn1-bin_4.10-1.1+deb9u1_amd64.deb
 sudo dpkg -i libtasn1-3-bin_4.10-1.1+deb9u1_all.deb
 sudo dpkg -i tigervncserver_1.7.0-1ubuntu1_amd64.deb
 
 # Verify the user account that vncserver will display.  
-
-
-echo "Is $USER the user account you want vncserver to connect to? (y/n)"
+echo ""
+echo "Is $USER the user account you want vncserver to connect to?  (y/n)"
 read verifyuser
 
-
 if [ ${verifyuser,,} = "y" ] ; then
-
     vncserver
 
 else
+    echo ""
     echo "What user account do you want vncserver to connect to?"
     read vncuseraccount
 	
 	if id "$vncuseraccount" >/dev/null 2>&1; then
-	    
 	    if [ ! -d "/home/$vncuseraccount" ] ; then
-	        echo "It appears $vncuseraccount does not have a home directly.  Vncserver must create a ~/.vnc directory for the user accout.  Would you like to create a home directory for $vncuseraccount? (y/n)"
+	        echo ""
+		echo "It appears $vncuseraccount does not have a home directly.  Vncserver must create a ~/.vnc directory for the user account.  Would you like to create a home directory for $vncuseraccount? (y/n)"
 	        read userhomecreate
 		    if [ ${userhomecreate,,} = "y" ] ; then
-			sudo addusr --home /home/$vncuseraccount $vncuseraccount
-			sudo chown -R $vncuseracount:$vncuseraccount /home/$vncuseraccount
-		        sudo -H -u $vncuseraccount bash -c 'vncserver'
+			sudo mkhomedir_helper $vncuseraccount
+			sudo -H -u $vncuseraccount bash -c 'vncserver'
 		    else 
+			echo ""
 			echo "starting vncserver with $USER"
 			vncserver
 		    fi
@@ -37,9 +38,10 @@ else
 	    fi
 
 	else
-	    echo "It appears $vncuseraccount does not exist.  Would you like to create $vncuseraccount?(y/n)"
+	    echo "It appears $vncuseraccount does not exist.  Would you like to create $vncuseraccount?  (y/n)"
 	    read vncnewuser
 		if [ ${vncnewuser,,} = "y" ] ; then 
+		    echo ""
 		    echo "Enter the new username"
 		    read vncnewusername
 		    sudo adduser $vncnewusername
@@ -54,14 +56,14 @@ fi
 
 sudo dpkg -i xrdp_0.6.1-2_amd64.deb
 
-#Configre xrdp to use High Security encryption
+#Configure xrdp to use High Security encryption
 sudo service xrdp stop
 sudo sed -i 's/crypt_level=low/crypt_level=high/g' /etc/xrdp/xrdp.ini
 sudo service xrdp start
 
 
 #Prompt user to add ufw firewall rule
-
+echo ""
 echo "Would you like to add ufw firewall rule to allow rdp traffic? (y/n)"
 read UFW_RULE
 
@@ -79,3 +81,6 @@ else
 fi
 echo ""
 echo "finished"
+
+
+
