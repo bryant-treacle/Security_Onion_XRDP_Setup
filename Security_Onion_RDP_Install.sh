@@ -61,7 +61,6 @@ sudo service xrdp stop
 sudo sed -i 's/crypt_level=low/crypt_level=high/g' /etc/xrdp/xrdp.ini
 sudo service xrdp start
 
-
 #Prompt user to add ufw firewall rule
 echo ""
 echo "Would you like to add ufw firewall rule to allow rdp traffic? (y/n)"
@@ -80,7 +79,4 @@ else
 
 fi
 echo ""
-echo "finished"
-
-
-
+echo "Finished!!!"
