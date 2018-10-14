@@ -4,6 +4,6 @@ This script will configure XRDP on Security Onion 16.04.X running in offline (ai
 
 The script is currently configured to use XRDP's high crypto setting (128it RC4).  If your organization requires FIPS compliance you can change the settings in the /etc/xrdp/xrdp.ini file.
 
-Note:  If you are creating a new user using this script, the first time you attempt to connect using that account the connection will fail. To fix this you can log into the server with that account or attempt to RDP a second time.  
+Note:  If you are creating a new user using this script, the first time you attempt to connect using that account the connection will fail. For X-related folders (Desktop, Downloads, etc), you will need to login in a graphics environment; they will be automatically generated the first time you login.  To fix this you can log into the server with that account or attempt to RDP a second time.
 
 
